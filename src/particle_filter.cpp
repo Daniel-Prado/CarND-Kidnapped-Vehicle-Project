@@ -156,10 +156,10 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
         // Get the list of landmarks that are within sensor range.
         vector<LandmarkObs> nearby_landmarks;
         for ( auto& lm : map_landmarks.landmark_list ) {
-                        double distance = dist(part.x, part.y, lm.x_f, lm.y_f);
-                        if (distance < sensor_range) {
-                                nearby_landmarks.push_back(LandmarkObs{lm.id_i, lm.x_f, lm.y_f});
-                        }
+            double distance = dist(part.x, part.y, lm.x_f, lm.y_f);
+            if (distance < sensor_range) {
+                nearby_landmarks.push_back(LandmarkObs{lm.id_i, lm.x_f, lm.y_f});
+            }
         }
 
         //for (int i = 0 ; i < nearby_landmarks.size() ; i++)
@@ -169,13 +169,13 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 
         // If there are no nearby landmarks, we assign a weight zero to make the particle die.
         if (nearby_landmarks.size() == 0) {
-                        part.weight = 0.0;
-                        // we continue the loop for the next particle
-                        continue;
+            part.weight = 0.0;
+            // we continue the loop for the next particle
+            continue;
         }
 
         // Associate each measurement with a landmark identifier,
-                // we only need to compare with the landmarks within range
+        // we only need to compare with the landmarks within range
         dataAssociation(nearby_landmarks, trans_observations);
         //for (int i = 0 ; i < trans_observations.size() ; i++)
         //{
@@ -185,8 +185,8 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
         // Calculate the particle final weight by the product of
         // each measurement's Multivariate-Gaussian probability.
 
-                vector<int> associations;
-                vector<double> sense_x;
+        vector<int> associations;
+        vector<double> sense_x;
         vector<double> sense_y;
         double weight = 1.0;
 
@@ -213,13 +213,13 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
             sense_y.push_back(o.y);
         }
 
-            if (associations.size() == 0) {
-                // if no landmarks selected, we  let the particle die with a weight zero.
-                part.weight = 0.0;
-            } else {
+        if (associations.size() == 0) {
+            // if no landmarks selected, we  let the particle die with a weight zero.
+            part.weight = 0.0;
+        } else {
 
-                    part = SetAssociations(part, associations, sense_x, sense_y);
-            }
+                part = SetAssociations(part, associations, sense_x, sense_y);
+        }
         part.weight = weight;
         weights.push_back(part.weight);
     }
